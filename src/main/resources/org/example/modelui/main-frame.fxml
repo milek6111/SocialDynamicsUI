@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.modelui.controllers.MainController">
+    <children>
+        <SplitPane dividerPositions="0.36971046770601335" layoutY="1.0" prefHeight="750.0" prefWidth="900.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                        <Button fx:id="startButton" layoutX="35.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Start" />
+                        <Button fx:id="stopButton" layoutX="216.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Stop" />
+                        <TitledPane animated="false" layoutX="64.0" layoutY="75.0" text="Modele">
+                            <content>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="119.0" prefWidth="200.0">
+                                    <children>
+                                        <RadioButton fx:id="sznajdModelChoice" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" text="Model Sznajdów" />
+                                        <RadioButton fx:id="majorityModelChoice" layoutX="14.0" layoutY="43.0" mnemonicParsing="false" text="Model większości" />
+                                        <RadioButton fx:id="voterModelChoice" layoutX="14.0" layoutY="72.0" mnemonicParsing="false" text="Model wyborcy" />
+                                    </children>
+                                </AnchorPane>
+                            </content>
+                        </TitledPane>
+                        <Slider fx:id="slider" layoutX="51.0" layoutY="291.0" prefHeight="14.0" prefWidth="202.0" />
+                        <Text layoutX="60.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Procent opinii niebieskiej:" wrappingWidth="138.13671875" />
+                        <Button fx:id="resetButton" layoutX="129.0" layoutY="673.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="71.0" text="Reset" />
+                        <ChoiceBox fx:id="gridSize" layoutX="77.0" layoutY="349.0" prefWidth="150.0" />
+                        <Text layoutX="83.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rozmiar siatki" />
+                  <Label fx:id="sliderLabel" layoutX="202.0" layoutY="257.0" text="50%" />
+                  <ChoiceBox fx:id="agentSelectionChoice" layoutX="77.0" layoutY="418.0" prefWidth="150.0" />
+                  <Label layoutX="83.0" layoutY="387.0" text="Sposób losowania agenta" />
+                  <ChoiceBox fx:id="updatingStrategy" layoutX="77.0" layoutY="490.0" prefWidth="150.0" />
+                  <Label layoutX="83.0" layoutY="459.0" text="Krok wizualizacji" />
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                    <children>
+                  <SplitPane dividerPositions="0.7774798927613941" orientation="VERTICAL" prefHeight="748.0" prefWidth="563.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="571.0" prefWidth="561.0">
+                           <children>
+                                    <GridPane fx:id="grid" layoutX="9.0" layoutY="17.0" prefHeight="544.0" prefWidth="544.0">
+                                        <rowConstraints>
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                        </rowConstraints>
+                                 <columnConstraints>
+                                    <ColumnConstraints />
+                                 </columnConstraints>
+                                    </GridPane>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                                    <LineChart fx:id="chart" prefHeight="158.0" prefWidth="544.0">
+                                        <xAxis>
+                                            <CategoryAxis label="krok" side="BOTTOM" />
+                                        </xAxis>
+                                        <yAxis>
+                                            <NumberAxis fx:id="yAxis" label="procent wypełnienia niebieskiego" lowerBound="0" side="LEFT" upperBound="100" />
+                                        </yAxis>
+                                    </LineChart>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
+</AnchorPane>

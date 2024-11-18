@@ -1,0 +1,9 @@
+.chart-line-symbol.series0 {
+    -fx-background-radius: 10px; /* Kropki większe dla serii 0 */
+    -fx-padding: 5px;
+}
+
+.chart-line-symbol.series1 {
+    -fx-background-radius: 10px; /* Kropki mniejsze dla serii 1 */
+    -fx-padding: 3px;
+}
