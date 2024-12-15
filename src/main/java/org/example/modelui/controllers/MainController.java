@@ -24,18 +24,23 @@ import org.example.models.config.ModelConfig;
 import org.example.models.enums.AgentSelection;
 import org.example.models.enums.ModelType;
 import org.example.models.enums.UpdatingStrategy;
+import org.example.modelui.enums.TimePeriod;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class MainController {
     @FXML
     private GridPane grid;
     @FXML
     private ChoiceBox<String> gridSize;
+    @FXML
+    private Slider majorityModelSlider;
+    @FXML
+    private Label majorityModelLabel;
     @FXML
     private Slider slider;
     @FXML
@@ -57,6 +62,8 @@ public class MainController {
     @FXML
     private ChoiceBox<UpdatingStrategy> updatingStrategy;
     @FXML
+    private ChoiceBox<String> timePeriodChoiceBox;
+    @FXML
     private LineChart<String, Number> chart;
     @FXML
     private Axis<Number> yAxis;
@@ -70,6 +77,8 @@ public class MainController {
     private Map<Integer, Boolean> opinions = new HashMap<>();
     private OpinionSimulation simulation;
     private boolean simulationOn = false;
+    private TimePeriod timePeriod;
+    private EnumMap<TimePeriod, Integer> periodMapper = new EnumMap<>(TimePeriod.class);
     private Thread simulationThread;
 
     private double scale = 1.0;
@@ -85,15 +94,57 @@ public class MainController {
         initializeUpdatingStrategy();
         initializeButtons();
         initializeModelChoice();
+        initializeMajorityModelCoefficient();
         initializeGridSize();
         initializeSlider();
         initializeAgentSelectionChoice();
         initializeSimulation();
         initializeChart();
         initializeGrid();
+        initializeTimePeriod();
 
         drawGrid();
     }
+
+    private void initializeTimePeriod() {
+        timePeriodChoiceBox.getItems().addAll(
+                Arrays.stream(TimePeriod.values())
+                        .map(TimePeriod::getValue)
+                        .toList()
+        );
+
+
+        timePeriodChoiceBox.setValue(TimePeriod.HUNDRED_MILIS.getValue());
+        timePeriod = TimePeriod.HUNDRED_MILIS;
+
+        timePeriodChoiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            timePeriod = TimePeriod.fromString(newValue);
+        });
+
+        for(var value : TimePeriod.values()){
+            String[] temp = value.getValue().split(" ");
+            if(temp[1].equals("seconds") || temp[1].equals("second")){
+                periodMapper.put(value,Integer.parseInt(temp[0])*1000);
+            }
+            else{
+                periodMapper.put(value,Integer.parseInt(temp[0]));
+            }
+        }
+    }
+
+    private void initializeMajorityModelCoefficient() {
+        if(!majorityModelChoice.isSelected()) majorityModelSlider.setDisable(true);
+
+        majorityModelSlider.setValue(0.05);
+        majorityModelLabel.setText(String.format("%.2f", majorityModelSlider.getValue()));
+
+        majorityModelSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            majorityModelLabel.setText(String.format("%.2f", newValue));
+
+            simulation.setMajorityModelCoeff(newValue.doubleValue());
+        });
+    }
+
 
     private void initializeGrid() {
         double containerWidth = grid.getPrefWidth();
@@ -191,7 +242,8 @@ public class MainController {
                         simulation.simulate();
                         Platform.runLater(this::drawGrid);
                         step++;
-                        Thread.sleep(250);
+                        //250
+                        Thread.sleep(periodMapper.get(timePeriod));
                     } catch (InterruptedException e) {
                         Thread.currentThread().interrupt();
                     }
@@ -227,6 +279,8 @@ public class MainController {
         majorityModelChoice.setDisable(true);
         voterModelChoice.setDisable(true);
         grid.setDisable(true);
+        majorityModelSlider.setDisable(true);
+        timePeriodChoiceBox.setDisable(true);
     }
 
     private void enableOptionsButtons() {
@@ -239,6 +293,8 @@ public class MainController {
         majorityModelChoice.setDisable(false);
         voterModelChoice.setDisable(false);
         grid.setDisable(false);
+        majorityModelSlider.setDisable(false);
+        timePeriodChoiceBox.setDisable(false);
     }
 
     private void initializeSimulation() {
@@ -319,12 +375,15 @@ public class MainController {
             if (newValue == sznajdModelChoice) {
                 currentModelType = ModelType.SZNAJD;
                 modelConfig.setType(ModelType.SZNAJD);
+                majorityModelSlider.setDisable(true);
             } else if (newValue == majorityModelChoice) {
                 currentModelType = ModelType.MAJORITY;
                 modelConfig.setType(ModelType.MAJORITY);
+                majorityModelSlider.setDisable(false);
             } else if (newValue == voterModelChoice) {
                 currentModelType = ModelType.VOTER;
                 modelConfig.setType(ModelType.VOTER);
+                majorityModelSlider.setDisable(true);
             }
             simulation = new OpinionSimulation(modelConfig);
         });

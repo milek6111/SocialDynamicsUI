@@ -24,7 +24,7 @@
                     <children>
                         <Button fx:id="startButton" layoutX="35.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Start" />
                         <Button fx:id="stopButton" layoutX="216.0" layoutY="14.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="77.0" text="Stop" />
-                        <TitledPane animated="false" layoutX="64.0" layoutY="75.0" text="Modele">
+                        <TitledPane animated="false" layoutX="62.0" layoutY="69.0" text="Modele">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="119.0" prefWidth="200.0">
                                     <children>
@@ -35,16 +35,21 @@
                                 </AnchorPane>
                             </content>
                         </TitledPane>
-                        <Slider fx:id="slider" layoutX="51.0" layoutY="291.0" prefHeight="14.0" prefWidth="202.0" />
-                        <Text layoutX="60.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Procent opinii niebieskiej:" wrappingWidth="138.13671875" />
+                        <Slider fx:id="slider" layoutX="51.0" layoutY="346.0" prefHeight="14.0" prefWidth="202.0" />
+                        <Text layoutX="60.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Procent opinii niebieskiej:" wrappingWidth="138.13671875" />
                         <Button fx:id="resetButton" layoutX="129.0" layoutY="673.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="71.0" text="Reset" />
-                        <ChoiceBox fx:id="gridSize" layoutX="77.0" layoutY="349.0" prefWidth="150.0" />
-                        <Text layoutX="83.0" layoutY="336.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rozmiar siatki" />
-                  <Label fx:id="sliderLabel" layoutX="202.0" layoutY="257.0" text="50%" />
-                  <ChoiceBox fx:id="agentSelectionChoice" layoutX="77.0" layoutY="418.0" prefWidth="150.0" />
-                  <Label layoutX="83.0" layoutY="387.0" text="Sposób losowania agenta" />
-                  <ChoiceBox fx:id="updatingStrategy" layoutX="77.0" layoutY="490.0" prefWidth="150.0" />
-                  <Label layoutX="83.0" layoutY="459.0" text="Krok wizualizacji" />
+                        <ChoiceBox fx:id="gridSize" layoutX="76.0" layoutY="398.0" prefWidth="150.0" />
+                        <Text layoutX="75.0" layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rozmiar siatki" />
+                  <Label fx:id="sliderLabel" layoutX="201.0" layoutY="319.0" text="50%" />
+                  <ChoiceBox fx:id="agentSelectionChoice" layoutX="76.0" layoutY="462.0" prefWidth="150.0" />
+                  <Label layoutX="76.0" layoutY="437.0" text="Sposób losowania agenta" />
+                  <ChoiceBox fx:id="updatingStrategy" layoutX="77.0" layoutY="523.0" prefWidth="150.0" />
+                  <Label layoutX="76.0" layoutY="498.0" text="Krok wizualizacji" />
+                  <Label layoutX="62.0" layoutY="248.0" text="Parametr modelu większości" />
+                  <Slider fx:id="majorityModelSlider" blockIncrement="0.01" layoutX="51.0" layoutY="286.0" max="0.99" min="0.01" prefHeight="14.0" prefWidth="202.0" value="0.05" />
+                  <Label fx:id="majorityModelLabel" layoutX="224.0" layoutY="248.0" />
+                  <ChoiceBox fx:id="timePeriodChoiceBox" layoutX="77.0" layoutY="596.0" prefWidth="150.0" />
+                  <Label layoutX="77.0" layoutY="565.0" text="Odstęp czasowy między krokami" />
                     </children>
                 </AnchorPane>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
