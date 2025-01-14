@@ -1,4 +1,4 @@
-package org.example.modelui.controllers;
+package pl.edu.agh.modelui.controllers;
 
 
 import javafx.application.Platform;
@@ -9,7 +9,6 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -19,18 +18,18 @@ import javafx.scene.shape.Line;
 
 
 import javafx.fxml.FXML;
-import org.example.OpinionSimulation;
-import org.example.models.config.ModelConfig;
-import org.example.models.enums.AgentSelection;
-import org.example.models.enums.ModelType;
-import org.example.models.enums.UpdatingStrategy;
-import org.example.modelui.enums.TimePeriod;
+import pl.edu.agh.OpinionSimulation;
+import pl.edu.agh.models.config.ModelConfig;
+
+import pl.edu.agh.models.enums.AgentSelection;
+import pl.edu.agh.models.enums.ModelType;
+import pl.edu.agh.models.enums.UpdatingStrategy;
+import pl.edu.agh.modelui.enums.TimePeriod;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.SimpleGraph;
 
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MainController {
     @FXML
@@ -52,7 +51,7 @@ public class MainController {
     @FXML
     private RadioButton voterModelChoice;
     @FXML
-    private ChoiceBox<AgentSelection> agentSelectionChoice;
+    private ChoiceBox<String> agentSelectionChoice;
     @FXML
     private Button startButton;
     @FXML
@@ -60,7 +59,7 @@ public class MainController {
     @FXML
     private Button resetButton;
     @FXML
-    private ChoiceBox<UpdatingStrategy> updatingStrategy;
+    private ChoiceBox<String> updatingStrategy;
     @FXML
     private ChoiceBox<String> timePeriodChoiceBox;
     @FXML
@@ -80,6 +79,8 @@ public class MainController {
     private TimePeriod timePeriod;
     private EnumMap<TimePeriod, Integer> periodMapper = new EnumMap<>(TimePeriod.class);
     private Thread simulationThread;
+    private Map<AgentSelection, String> agentSelectionToStringMapper;
+    private Map<UpdatingStrategy, String> updatingStrategyToStringMapper;
 
     private double scale = 1.0;
     private final double minScale = 1.0;
@@ -91,6 +92,7 @@ public class MainController {
 
     @FXML
     protected void initialize() {
+        initilizeMappers();
         initializeUpdatingStrategy();
         initializeButtons();
         initializeModelChoice();
@@ -104,6 +106,17 @@ public class MainController {
         initializeTimePeriod();
 
         drawGrid();
+    }
+
+    private void initilizeMappers() {
+        agentSelectionToStringMapper = new EnumMap<>(AgentSelection.class);
+        agentSelectionToStringMapper.put(AgentSelection.RANDOM, "Losowy");
+        agentSelectionToStringMapper.put(AgentSelection.SEQUENTIAL, "Sekwencyjny");
+
+        updatingStrategyToStringMapper = new EnumMap<>(UpdatingStrategy.class);
+        updatingStrategyToStringMapper.put(UpdatingStrategy.N_TIMES, "N razy na krok");
+        updatingStrategyToStringMapper.put(UpdatingStrategy.ONE_STEP, "1 raz na krok");
+
     }
 
     private void initializeTimePeriod() {
@@ -123,7 +136,7 @@ public class MainController {
 
         for(var value : TimePeriod.values()){
             String[] temp = value.getValue().split(" ");
-            if(temp[1].equals("seconds") || temp[1].equals("second")){
+            if(temp[1].equals("sekundy") || temp[1].equals("sekunda")){
                 periodMapper.put(value,Integer.parseInt(temp[0])*1000);
             }
             else{
@@ -213,16 +226,26 @@ public class MainController {
     }
 
     private void initializeUpdatingStrategy() {
-        updatingStrategy.getItems().addAll(UpdatingStrategy.values());
-        updatingStrategy.setValue(UpdatingStrategy.N_TIMES);
+        updatingStrategy.getItems().addAll(updatingStrategyToStringMapper.values());
+        updatingStrategy.setValue(updatingStrategyToStringMapper.get(UpdatingStrategy.N_TIMES));
         updatingStrategy.setOnAction(event -> {
-            modelConfig.setUpdatingStrategy(updatingStrategy.getValue());
+            if(updatingStrategy.getValue().equals("N razy na krok")){
+                modelConfig.setUpdatingStrategy(UpdatingStrategy.N_TIMES);
+            }
+            else{
+                modelConfig.setUpdatingStrategy(UpdatingStrategy.ONE_STEP);
+            }
             simulation = new OpinionSimulation(modelConfig);
         });
     }
 
     private void initializeButtons() {
+        stopButton.setDisable(true);
+
         startButton.setOnAction(event -> {
+            stopButton.setDisable(false);
+            startButton.setDisable(true);
+
             if (simulationOn) return;
             simulationOn = true;
             series.getData().clear();
@@ -255,6 +278,8 @@ public class MainController {
         });
         stopButton.setOnAction(event -> {
             enableOptionsButtons();
+            startButton.setDisable(false);
+            stopButton.setDisable(true);
             simulationOn = false;
             if (simulationThread != null) {
                 simulationThread.interrupt();
@@ -338,23 +363,33 @@ public class MainController {
         modelConfig.setNetwork(network);
         modelConfig.setOpinions(opinions);
         modelConfig.setType(currentModelType);
-        modelConfig.setAgentSelection(agentSelectionChoice.getValue());
-        modelConfig.setUpdatingStrategy(updatingStrategy.getValue());
+
+        if(agentSelectionChoice.getValue().equals("Losowy")){
+            modelConfig.setAgentSelection(AgentSelection.RANDOM);
+        }
+        else{
+            modelConfig.setAgentSelection(AgentSelection.SEQUENTIAL);
+        }
+
+        if(updatingStrategy.getValue().equals("N razy na krok")){
+            modelConfig.setUpdatingStrategy(UpdatingStrategy.N_TIMES);
+        }
+        else{
+            modelConfig.setUpdatingStrategy(UpdatingStrategy.ONE_STEP);
+        }
         simulation = new OpinionSimulation(modelConfig);
         simulation.randomizeWithBlueCoefficient(slider.getValue() / 100.0);
     }
 
     private void initializeAgentSelectionChoice() {
-        agentSelectionChoice.getItems().addAll(AgentSelection.values());
-        agentSelectionChoice.setValue(AgentSelection.RANDOM);
+        agentSelectionChoice.getItems().addAll(agentSelectionToStringMapper.values());
+        agentSelectionChoice.setValue(agentSelectionToStringMapper.get(AgentSelection.RANDOM));
         agentSelectionChoice.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             switch (newValue) {
-                case RANDOM:
-                    System.out.println(AgentSelection.RANDOM);
+                case "Losowy":
                     modelConfig.setAgentSelection(AgentSelection.RANDOM);
                     break;
-                case SEQUENTIAL:
-                    System.out.println(AgentSelection.SEQUENTIAL);
+                case "Sekwencyjny":
                     modelConfig.setAgentSelection(AgentSelection.SEQUENTIAL);
                     break;
             }
@@ -393,6 +428,7 @@ public class MainController {
         gridSize.getItems().add("5x5");
         gridSize.getItems().add("10x10");
         gridSize.getItems().add("20x20");
+        gridSize.getItems().add("30x30");
         gridSize.setValue("30x30");
 
         gridSize.valueProperty().addListener(new ChangeListener<String>() {

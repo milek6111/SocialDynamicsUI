@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.modelui.controllers.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="750.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.edu.agh.modelui.controllers.MainController">
     <children>
         <SplitPane dividerPositions="0.36971046770601335" layoutY="1.0" prefHeight="750.0" prefWidth="900.0">
             <items>
@@ -35,8 +35,8 @@
                                 </AnchorPane>
                             </content>
                         </TitledPane>
-                        <Slider fx:id="slider" layoutX="51.0" layoutY="346.0" prefHeight="14.0" prefWidth="202.0" />
-                        <Text layoutX="60.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Procent opinii niebieskiej:" wrappingWidth="138.13671875" />
+                        <Slider fx:id="slider" layoutX="51.0" layoutY="356.0" prefHeight="14.0" prefWidth="202.0" />
+                        <Text layoutX="60.0" layoutY="332.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Początkowy udział opinii niebieskiej:" wrappingWidth="138.13671875" />
                         <Button fx:id="resetButton" layoutX="129.0" layoutY="673.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="71.0" text="Reset" />
                         <ChoiceBox fx:id="gridSize" layoutX="76.0" layoutY="398.0" prefWidth="150.0" />
                         <Text layoutX="75.0" layoutY="387.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Rozmiar siatki" />
@@ -75,7 +75,7 @@
                                             <CategoryAxis label="krok" side="BOTTOM" />
                                         </xAxis>
                                         <yAxis>
-                                            <NumberAxis fx:id="yAxis" label="procent wypełnienia niebieskiego" lowerBound="0" side="LEFT" upperBound="100" />
+                                            <NumberAxis fx:id="yAxis" label="stosunek (%)" lowerBound="0" side="LEFT" upperBound="100" />
                                         </yAxis>
                                     </LineChart>
                            </children>

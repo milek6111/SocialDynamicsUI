@@ -1,4 +1,4 @@
-module org.example.modelui {
+module pl.edu.agh.modelui {
     requires javafx.controls;
     requires javafx.fxml;
 
@@ -7,8 +7,8 @@ module org.example.modelui {
     requires SocialModelDynamicLibrary;
     requires org.jgrapht.core;
 
-    opens org.example.modelui to javafx.fxml;
-    exports org.example.modelui;
-    exports org.example.modelui.controllers;
-    opens org.example.modelui.controllers to javafx.fxml;
+    opens pl.edu.agh.modelui to javafx.fxml;
+    exports pl.edu.agh.modelui;
+    exports pl.edu.agh.modelui.controllers;
+    opens pl.edu.agh.modelui.controllers to javafx.fxml;
 }

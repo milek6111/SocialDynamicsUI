@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
+    <groupId>pl.edu.agh</groupId>
     <artifactId>ModelUI</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>ModelUI</name>
@@ -48,11 +48,11 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.example</groupId> <!-- Ten sam groupId co w Twojej bibliotece -->
-            <artifactId>SocialModelDynamicLibrary</artifactId>
-            <version>2.3-SNAPSHOT</version> <!-- Wersja Twojej biblioteki -->
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>pl.edu.agh</groupId>-->
+<!--            <artifactId>SocialModelDynamicLibrary</artifactId>-->
+<!--            <version>2.3-SNAPSHOT</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.jgrapht</groupId>
@@ -64,6 +64,12 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-shade-plugin</artifactId>
             <version>3.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.edu.agh</groupId>
+            <artifactId>SocialModelDynamicLibrary</artifactId>
+            <version>2.3-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
